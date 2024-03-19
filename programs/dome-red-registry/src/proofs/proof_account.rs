@@ -27,7 +27,7 @@ impl ProofAccount {
             return Err(DomeError::ProofPublicTooLong.into());
         }
         if verification_key.len() > MAX_VERIFICATION_KEY_LENGTH {
-            return Err(DomeError::InvalidProofVerificationKey.into());
+            return Err(DomeError::ProofVerificationKeytooLong.into());
         }
         self.proof = proof.to_owned();
         self.public = public.to_owned();
