@@ -33,13 +33,13 @@ impl CircuitsPool {
             .and_then(|index| self.circuits.get_mut(index))
     }
 
-    pub fn add_circuit(&mut self, circuit_name: &str, circuit_code: &str) -> Result<()> {
+    pub fn add_circuit(&mut self, circuit_name: &str, circuit_program: &str) -> Result<()> {
         if self.circuits.len() >= MAX_CIRCUITS_NUM {
             return Err(DomeError::MaxCircuitsNumReached.into());
         }
         self.circuits.push(
             self.next_circuit_id()
-                .and_then(|circuit_id| Circuit::new(circuit_id, circuit_name, circuit_code))?
+                .and_then(|circuit_id| Circuit::new(circuit_id, circuit_name, circuit_program))?
         );
         Ok(())
     }

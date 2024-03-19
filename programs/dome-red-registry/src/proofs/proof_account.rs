@@ -2,17 +2,17 @@ use anchor_lang::prelude::*;
 
 use crate::errors::DomeError;
 
-const MAX_PROOF_LENGTH: usize = 1024;
-const MAX_VERIFICATION_KEY_LENGTH: usize = 1024;
+const MAX_PROOF_LENGTH: usize = 4096;
+const MAX_VERIFICATION_KEY_LENGTH: usize = 2048;
 
 #[account]
 #[derive(InitSpace)]
 pub struct ProofAccount {
     #[max_len(MAX_PROOF_LENGTH)]
     proof: String,
+    pub bump: u8,
     #[max_len(MAX_VERIFICATION_KEY_LENGTH)]
     verification_key: String,
-    pub bump: u8,
 }
 
 impl ProofAccount {

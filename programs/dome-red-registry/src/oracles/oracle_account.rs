@@ -4,7 +4,7 @@ use crate::circuits::CircuitsPool;
 use crate::errors::DomeError;
 
 const MAX_NAME_LENGTH: usize = 128;
-const MAX_RPC_URL_LENGTH: usize = 128;
+const MAX_RPC_URL_LENGTH: usize = 256;
 
 #[account]
 #[derive(InitSpace)]

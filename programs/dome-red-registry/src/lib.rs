@@ -44,9 +44,9 @@ mod dome_registry {
 
     // -----
 
-    pub fn register_circuit(ctx: Context<OracleControl>, circuit_name: String, circuit_code: String) -> Result<()> {
+    pub fn register_circuit(ctx: Context<OracleControl>, circuit_name: String, circuit_program: String) -> Result<()> {
         let oracle_account = &mut ctx.accounts.oracle_account;
-        oracle_account.circuits_pool().add_circuit(&circuit_name, &circuit_code)
+        oracle_account.circuits_pool().add_circuit(&circuit_name, &circuit_program)
     }
 
     pub fn remove_circuit(ctx: Context<OracleControl>, circuit_id: u32) -> Result<()> {

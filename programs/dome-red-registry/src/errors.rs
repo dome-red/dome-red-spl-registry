@@ -6,7 +6,7 @@ pub enum DomeError {
 
     CircuitNotFound,
     CircuitNameTooLong,
-    CircuitCodeTooLong,
+    CircuitProgramTooLong,
     MaxCircuitsNumReached,
 
     OracleNotFound,
