@@ -16,5 +16,6 @@ pub enum DomeError {
     MaxOraclesNumReached,
 
     ProofTooLong,
+    ProofPublicTooLong,
     InvalidProofVerificationKey,
 }

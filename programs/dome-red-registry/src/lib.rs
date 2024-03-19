@@ -66,9 +66,9 @@ mod dome_registry {
 
     // -----
 
-    pub fn register_proof(ctx: Context<RegisterProof>, _target_oracle_hash: String, _user_pubkey_hash: String, proof: String, verification_key: String) -> Result<()> {
+    pub fn register_proof(ctx: Context<RegisterProof>, _target_oracle_hash: String, _user_pubkey_hash: String, proof: String, public: String, verification_key: String) -> Result<()> {
         let proof_account = &mut ctx.accounts.proof_account;
-        proof_account.initialize(&proof, &verification_key)?;
+        proof_account.initialize(&proof, &public, &verification_key)?;
         proof_account.set_bump(ctx.bumps.proof_account);
         Ok(())
     }
@@ -80,11 +80,11 @@ pub struct RegisterOracle<'info> {
     #[account(mut)]
     pub oracle: Signer<'info>,
     #[account(
-    init_if_needed,
-    payer = oracle,
-    space = 8 + OracleAccount::INIT_SPACE,
-    seeds = [b"oracle", oracle.key().as_ref()],
-    bump
+        init_if_needed,
+        payer = oracle,
+        space = 8 + OracleAccount::INIT_SPACE,
+        seeds = [b"oracle", oracle.key().as_ref()],
+        bump
     )]
     pub oracle_account: Account<'info, OracleAccount>,
     pub system_program: Program<'info, System>,
@@ -99,16 +99,27 @@ pub struct OracleControl<'info> {
 }
 
 #[derive(Accounts)]
-#[instruction(target_oracle_hash: String, user_pubkey_hash: String, proof: String, verification_key: String)]
+#[instruction(
+    target_oracle_hash: String,
+    user_pubkey_hash: String,
+    proof: String,
+    public: String,
+    verification_key: String
+)]
 pub struct RegisterProof<'info> {
     #[account(mut)]
     pub oracle: Signer<'info>,
     #[account(
-    init_if_needed,
-    payer = oracle,
-    space = 8 + ProofAccount::INIT_SPACE,
-    seeds = [b"proof", oracle.key().as_ref(), target_oracle_hash.to_lowercase().as_bytes(), user_pubkey_hash.to_lowercase().as_bytes()],
-    bump
+        init_if_needed,
+        payer = oracle,
+        space = 8 + ProofAccount::INIT_SPACE,
+        seeds = [
+            b"proof",
+            oracle.key().as_ref(),
+            target_oracle_hash.to_lowercase().as_bytes(),
+            user_pubkey_hash.to_lowercase().as_bytes()
+        ],
+        bump
     )]
     pub proof_account: Account<'info, ProofAccount>,
     pub system_program: Program<'info, System>,
