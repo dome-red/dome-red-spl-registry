@@ -17,6 +17,16 @@
 | register_proof        | With this instruction, Proving Oracle creates ProofAccount PDA (if not exists) for user proof.<br><br>Proof PDA address is calculated on Pubkey of Proving Oracle, hash of the Pubkey of Target Oracle (for which this proof is created) and hash of the User Pubkey (for whom this proof is created).<br><br>We use hashes to hide association between User and Oracles.                                                                                                                                                                                                  |
 | increase_account_size | PDA accounts size is limited to 10K. So, we create PDA with Circuits Pool, that can contain 4 circuits. If Oracle needs to store more circuits, it can increase the space with this instruction. |
 
+## Testing
+
+1. Build spl code: `anchor build`
+2. Install dependencies for tests: `yarn install`
+3. Start Solana test validator: `solana-test-validator -r`
+4. Deploy program library into solana: `anchor deploy`
+5. Run tests: `yarn run tests`
+
+Program ID can be obtained by command: `solana address -k ./target/deploy/dome_red_spl_registry-keypair.json`
+
 ## Program Scheme
 
 ![](https://www.plantuml.com/plantuml/png/ZPRFRjGm4CRlVWghf_vXBt11KHIrAWSuiQB0rV8wqzGYiLUEKreGxywiuz3CTZRarCRVRpoVPpBnNlTHXpXqhTW77xtnhQnz1of0hVfzYtyRsyVmNABS1DrLWfLb8Q_a-011-Q1D2-SN2omulMjX3LdRVYrg7hHh5aZ6gh7133R-1-xy8_0eUomUPSwrp39siGl-VX6rpWJGFIXjZ1zSLBtz1HWXHFGDn0S8yhT0UZ1HVidRVau5As_6YBuIL4ZxZaKjv9rj78JJn9ItaDiFD-KevutPVVjdNEXKVhqmQlodl4lhbPYyZY6ttiNWsvbLiiuvfS1AeySLsXxgFijArfci391QHvCcSSh9XAojpQVSyxpL7NPyvfLHESSyji8t6xZ2_H_Qsoc-n0oLS3w2tFaOVITJqaAUZORFv5KEaDjXzmEU1Gb7UfF7i2vm1zyokjFTuU0nMDSmSjWRDOHsWSX3swkzzyZTviSjb-vAxePkNyZXFIDPPwFLRPfHHkuXgdoOapeUvdHmFif9_M2D5Sa9aM0-7-JKymTIea9-1rDckI9SIkJWAQeCAul7V8qqC2DS3KyST8_AH76whXVb_97d2QONHqN8U6vgZTr-zvQiaLSoAypBE1Vov1nhkMe_Npmozbw6QnhMvTbAK_vgjF3vu_bN7Hg8LBX8ohSUmhGWvdcoVLoOpBzXz67NMhC0F4AmzzReQBrJc8D7wOHbXH-mhF8ZyA-Ocytbmgkz2IYJSJc-rIut6mhGAuZHwPSVTT8qmT_swBEIDFK2I2pmN57GdnafZbWx5SV-vaZXpDqWn3MuUkZQlm00)
