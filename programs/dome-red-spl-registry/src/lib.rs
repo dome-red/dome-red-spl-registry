@@ -34,11 +34,9 @@ mod dome_red_spl_registry {
     pub fn change_oracle(
         ctx: Context<OracleControl>,
         oracle_name: String,
-        oracle_rpc_url: String,
     ) -> Result<()> {
         let oracle_account = &mut ctx.accounts.oracle_account;
         oracle_account.set_name(&oracle_name)?;
-        oracle_account.set_rpc_url(&oracle_rpc_url)?;
         Ok(())
     }
 

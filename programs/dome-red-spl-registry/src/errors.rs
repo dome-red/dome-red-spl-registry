@@ -13,8 +13,6 @@ pub enum DomeError {
 
     #[msg("Oracle name is too long")]
     OracleNameTooLong,
-    #[msg("Oracle RPC URL is too long")]
-    OracleRpcUrlTooLong,
 
     #[msg("Proof data is too long")]
     ProofTooLong,
