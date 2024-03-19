@@ -3,8 +3,9 @@ use anchor_lang::prelude::*;
 use crate::circuits::CircuitsPool;
 use crate::errors::DomeError;
 
-const MAX_NAME_LENGTH: usize = 128;
-const MAX_RPC_URL_LENGTH: usize = 256;
+// Maximum PDA size in one iteration is 10240 bytes.ы
+const MAX_NAME_LENGTH: usize = 32;
+const MAX_RPC_URL_LENGTH: usize = 128;
 
 #[account]
 #[derive(InitSpace)]

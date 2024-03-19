@@ -2,8 +2,9 @@ use anchor_lang::prelude::*;
 
 use crate::errors::DomeError;
 
+// Maximum PDA size in one iteration is 10240 bytes.
 const MAX_PROOF_LENGTH: usize = 4096;
-const MAX_PUBLIC_LENGTH: usize = 4096;
+const MAX_PUBLIC_LENGTH: usize = 2048;
 const MAX_VERIFICATION_KEY_LENGTH: usize = 2048;
 
 #[account]

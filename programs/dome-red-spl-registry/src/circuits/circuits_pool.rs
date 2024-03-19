@@ -5,7 +5,7 @@ use crate::errors::DomeError;
 
 use super::Circuit;
 
-const MAX_CIRCUITS_NUM: usize = 1024;
+const MAX_CIRCUITS_NUM: usize = 4; //32;
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq, InitSpace, Default)]
 pub struct CircuitsPool {
@@ -34,9 +34,6 @@ impl CircuitsPool {
     }
 
     pub fn add_circuit(&mut self, circuit_name: &str, circuit_program: &str) -> Result<()> {
-        if self.circuits.len() >= MAX_CIRCUITS_NUM {
-            return Err(DomeError::MaxCircuitsNumReached.into());
-        }
         self.circuits.push(
             self.next_circuit_id()
                 .and_then(|circuit_id| Circuit::new(circuit_id, circuit_name, circuit_program))?

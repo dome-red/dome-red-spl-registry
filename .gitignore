@@ -7,3 +7,6 @@ log
 tmp/
 Cargo.lock
 yarn.lock
+test-ledger
+package-lock.json
+.anchor

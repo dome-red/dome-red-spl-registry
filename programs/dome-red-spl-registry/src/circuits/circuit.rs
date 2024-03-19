@@ -2,8 +2,8 @@ use anchor_lang::prelude::*;
 
 use crate::errors::DomeError;
 
-const MAX_NAME_LENGTH: usize = 128;
-const MAX_PROGRAM_LENGTH: usize = 4096;
+const MAX_NAME_LENGTH: usize = 32;
+const MAX_PROGRAM_LENGTH: usize = 2048;
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq, InitSpace)]
 pub struct Circuit {

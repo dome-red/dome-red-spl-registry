@@ -8,10 +8,10 @@ mod circuits;
 mod oracles;
 mod proofs;
 
-declare_id!("47H8nGnL2qwag3rQi9sf6P825XjKseHsQfBCiscUUgqX");
+declare_id!("DWPQtKoCh7daDAqJa5LAw2QT9aZtgXk38QBSpTz6yoVX");
 
 #[program]
-mod dome_registry {
+mod dome_red_spl_registry {
     use super::*;
 
     pub fn register_oracle(ctx: Context<RegisterOracle>, oracle_name: String, oracle_endpoint_url: String) -> Result<()> {
@@ -72,6 +72,10 @@ mod dome_registry {
         proof_account.set_bump(ctx.bumps.proof_account);
         Ok(())
     }
+
+    pub fn increase_account_size(_ctx: Context<IncreaseAccoutSize>, _len: u16) -> Result<()> {
+        Ok(())
+    }
 }
 
 
@@ -123,4 +127,21 @@ pub struct RegisterProof<'info> {
     )]
     pub proof_account: Account<'info, ProofAccount>,
     pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+#[instruction(len: u16)]
+pub struct IncreaseAccoutSize<'info> {
+    #[account(mut)]
+    pub oracle: Signer<'info>,
+    #[account(
+        mut,
+        realloc = len as usize,
+        realloc::zero = true,
+        realloc::payer=oracle,
+        seeds = [b"oracle", oracle.key().as_ref()],
+        bump = oracle_account.bump
+    )]
+    pub oracle_account: Account<'info, OracleAccount>,
+    pub system_program: Program<'info, System>
 }

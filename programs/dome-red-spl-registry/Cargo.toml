@@ -1,12 +1,12 @@
 [package]
-name = "dome-red-registry"
+name = "dome-red-spl-registry"
 version = "0.1.0"
 description = "Created with Anchor"
 edition = "2021"
 
 [lib]
 crate-type = ["cdylib", "lib"]
-name = "dome_red_registry"
+name = "dome_red_spl_registry"
 
 [features]
 no-entrypoint = []
