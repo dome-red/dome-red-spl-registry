@@ -97,9 +97,9 @@ RegisterOracle *-- OracleAccount
 OracleControl *-- OracleAccount
 RegisterProof *-- ProofAccount
 
-dome_registry --> RegisterOracle
-dome_registry --> OracleControl
-dome_registry::register_proof --> RegisterProof
+dome_registry --\> RegisterOracle
+dome_registry --\> OracleControl
+dome_registry::register_proof --\> RegisterProof
 
 @enduml
 
