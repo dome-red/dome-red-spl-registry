@@ -1,4 +1,4 @@
-# Dome Red SPL Registry
+# Dome.Red SPL Registry
 
 ## Instructions set
 
