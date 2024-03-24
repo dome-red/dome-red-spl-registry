@@ -1,4 +1,3 @@
-use anchor_lang::__private::bytemuck::Contiguous;
 use anchor_lang::prelude::*;
 
 use crate::errors::DomeError;
@@ -11,14 +10,17 @@ const MAX_CIRCUITS_NUM: usize = 4; //32;
 pub struct CircuitsPool {
     #[max_len(MAX_CIRCUITS_NUM, Circuit::INIT_SPACE)]
     circuits: Vec<Circuit>,
+    last_used_id: u32,
 }
 
 impl CircuitsPool {
-    pub fn next_circuit_id(&self) -> Result<u32> {
-        let last_id = self.circuits.last().map(|x| x.id).unwrap_or(0);
-        match last_id {
-            u32::MAX_VALUE => Err(DomeError::MaxCircuitsNumReached.into()),
-            _ => Ok(last_id + 1)
+    pub fn next_circuit_id(&mut self) -> Result<u32> {
+        match self.last_used_id.checked_add(1) {
+            None => Err(DomeError::MaxCircuitsNumReached.into()),
+            Some(last_user_id) => {
+                self.last_used_id = last_user_id;
+                Ok(self.last_used_id)
+            }
         }
     }
 
@@ -34,10 +36,9 @@ impl CircuitsPool {
     }
 
     pub fn add_circuit(&mut self, circuit_name: &str, circuit_program: &str) -> Result<()> {
-        self.circuits.push(
-            self.next_circuit_id()
-                .and_then(|circuit_id| Circuit::new(circuit_id, circuit_name, circuit_program))?
-        );
+        let circuit = self.next_circuit_id()
+            .and_then(|circuit_id| Circuit::new(circuit_id, circuit_name, circuit_program))?;
+        self.circuits.push(circuit);
         Ok(())
     }
 

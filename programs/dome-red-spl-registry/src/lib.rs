@@ -14,9 +14,9 @@ declare_id!("DWPQtKoCh7daDAqJa5LAw2QT9aZtgXk38QBSpTz6yoVX");
 mod dome_red_spl_registry {
     use super::*;
 
-    pub fn register_oracle(ctx: Context<RegisterOracle>, oracle_name: String, oracle_endpoint_url: String) -> Result<()> {
+    pub fn register_oracle(ctx: Context<RegisterOracle>, oracle_name: String) -> Result<()> {
         let oracle_account = &mut ctx.accounts.oracle_account;
-        oracle_account.initialize(&oracle_name, &oracle_endpoint_url)?;
+        oracle_account.initialize(&oracle_name)?;
         oracle_account.set_bump(ctx.bumps.oracle_account);
         Ok(())
     }
@@ -64,7 +64,7 @@ mod dome_red_spl_registry {
 
     // -----
 
-    pub fn register_proof(ctx: Context<RegisterProof>, _target_oracle_hash: String, _user_pubkey_hash: String, proof: String, public: String, verification_key: String) -> Result<()> {
+    pub fn register_proof(ctx: Context<RegisterProof>, _target_oracle_hash: String, _circuit_id: u32, _user_pubkey_hash: String, proof: String, public: String, verification_key: String) -> Result<()> {
         let proof_account = &mut ctx.accounts.proof_account;
         proof_account.initialize(&proof, &public, &verification_key)?;
         proof_account.set_bump(ctx.bumps.proof_account);
@@ -103,6 +103,7 @@ pub struct OracleControl<'info> {
 #[derive(Accounts)]
 #[instruction(
     target_oracle_hash: String,
+    circuit_id: u32,
     user_pubkey_hash: String,
     proof: String,
     public: String,
@@ -119,6 +120,7 @@ pub struct RegisterProof<'info> {
             b"proof",
             oracle.key().as_ref(),
             target_oracle_hash.to_lowercase().as_bytes(),
+            circuit_id.to_le_bytes().as_slice(),
             user_pubkey_hash.to_lowercase().as_bytes()
         ],
         bump
