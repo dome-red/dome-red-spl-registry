@@ -71,7 +71,7 @@ mod dome_red_spl_registry {
         Ok(())
     }
 
-    pub fn increase_account_size(_ctx: Context<IncreaseAccoutSize>, _len: u16) -> Result<()> {
+    pub fn increase_account_size(_ctx: Context<IncreaseAccoutSize>, _len: u32) -> Result<()> {
         Ok(())
     }
 }
@@ -130,7 +130,7 @@ pub struct RegisterProof<'info> {
 }
 
 #[derive(Accounts)]
-#[instruction(len: u16)]
+#[instruction(len: u32)]
 pub struct IncreaseAccoutSize<'info> {
     #[account(mut)]
     pub oracle: Signer<'info>,
