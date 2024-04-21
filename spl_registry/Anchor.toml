@@ -6,7 +6,6 @@ skip-lint = false
 
 [programs.localnet]
 dome_red_spl_registry = "DWPQtKoCh7daDAqJa5LAw2QT9aZtgXk38QBSpTz6yoVX"
-#dome_red_spl_registry = "6sY7mfpA8nGWvJjcG9LBWAPizcKVcWeSCgQ3jxnMmvqs"
 
 [registry]
 url = "https://api.apr.dev"

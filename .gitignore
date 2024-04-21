@@ -10,3 +10,4 @@ yarn.lock
 test-ledger
 package-lock.json
 .anchor
+.DS_Store
