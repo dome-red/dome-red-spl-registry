@@ -1,0 +1,28 @@
+services:
+  solana:
+    image: dome-red/spl-registry:latest
+    hostname: solana
+    networks:
+      - net
+    expose:
+      - 8899
+    healthcheck:
+      test: [ CMD-SHELL, "/opt/docker/wait-for-solana.sh" ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 5s
+    entrypoint: /opt/docker/solana-run-registry.sh
+
+  spl-registry:
+    image: dome-red/spl-registry:latest
+    hostname: spl-registry
+    depends_on:
+      solana:
+        condition: service_healthy
+    networks:
+      - net
+    entrypoint: /opt/docker/deploy-spl-registry.sh
+
+networks:
+  net:

@@ -23,9 +23,14 @@
 2. Install dependencies for tests: `yarn install`
 3. Start Solana test validator: `solana-test-validator -r`
 4. Deploy program library into solana: `anchor deploy`
-5. Run tests: `yarn run tests`
+5. Run tests: `anchor test`
 
 Program ID can be obtained by command: `solana address -k ./target/deploy/dome_red_spl_registry-keypair.json`
+
+## Using Docker for Testing
+
+1. Build docker image: `docker build -t dome-red/spl-registry:latest .`
+2. Run tests inside docker-compose: `docker-compose -f ./docker/docker-compose.yaml up`
 
 ## Program Scheme
 
