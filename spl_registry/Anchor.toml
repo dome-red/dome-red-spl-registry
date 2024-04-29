@@ -6,14 +6,13 @@ skip-lint = false
 
 [programs.localnet]
 dome_red_spl_registry = "DWPQtKoCh7daDAqJa5LAw2QT9aZtgXk38QBSpTz6yoVX"
-#dome_red_spl_registry = "6sY7mfpA8nGWvJjcG9LBWAPizcKVcWeSCgQ3jxnMmvqs"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
 cluster = "Localnet"
-wallet = "/Users/stoneface/.config/solana/id.json"
+wallet = "/root/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"

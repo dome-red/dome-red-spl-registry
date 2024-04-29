@@ -10,7 +10,7 @@ describe("dome-red-spl-registry", () => {
 
     const program = anchor.workspace.DomeRedSplRegistry as Program<DomeRedSplRegistry>;
 
-    it("Sets and changes Oracle name and RPC URL", async () => {
+    it("Sets and changes Oracle name", async () => {
         const [oracleAccountPDA, _] = await PublicKey.findProgramAddress(
             [
                 anchor.utils.bytes.utf8.encode('oracle'),
@@ -19,7 +19,7 @@ describe("dome-red-spl-registry", () => {
             program.programId
         )
 
-        const register_tx = await program.methods.registerOracle('Alice', '127.0.0.1:3000')
+        const register_tx = await program.methods.registerOracle('Alice')
             .accounts({
                 oracle: provider.wallet.publicKey,
                 oracleAccount: oracleAccountPDA,
@@ -32,11 +32,10 @@ describe("dome-red-spl-registry", () => {
 
         // Ensure it has the right data.
         assert.equal(oracleAccount.name, 'Alice');
-        assert.equal(oracleAccount.rpcUrl, '127.0.0.1:3000');
         console.log(oracleAccount);
 
         // Change oracle data.
-        const change_oracle_tx = await program.methods.changeOracle('Bob', '127.0.0.1:8080')
+        const change_oracle_tx = await program.methods.changeOracle('Bob')
             .accounts({
                 oracle: provider.wallet.publicKey,
                 oracleAccount: oracleAccountPDA,
@@ -49,7 +48,6 @@ describe("dome-red-spl-registry", () => {
 
         // Ensure it has the right data.
         assert.equal(changedOracleAccount.name, 'Bob');
-        assert.equal(changedOracleAccount.rpcUrl, '127.0.0.1:8080');
         console.log(changedOracleAccount);
 
     });
@@ -63,7 +61,7 @@ describe("dome-red-spl-registry", () => {
             program.programId
         )
 
-        const register_tx = await program.methods.registerOracle('Alice', '127.0.0.1:3000')
+        const register_tx = await program.methods.registerOracle('Alice')
             .accounts({
                 oracle: provider.wallet.publicKey,
                 oracleAccount: oracleAccountPDA,
