@@ -71,7 +71,7 @@ mod dome_red_spl_registry {
         Ok(())
     }
 
-    pub fn increase_account_size(_ctx: Context<IncreaseAccoutSize>, _len: u32) -> Result<()> {
+    pub fn increase_account_size(_ctx: Context<IncreaseAccountSize>, _len: u32) -> Result<()> {
         Ok(())
     }
 }
@@ -85,7 +85,7 @@ pub struct RegisterOracle<'info> {
         init_if_needed,
         payer = oracle,
         space = 8 + OracleAccount::INIT_SPACE,
-        seeds = [b"oracle", oracle.key().as_ref()],
+        seeds = [b"oracle", oracle.key().to_bytes().as_slice()],
         bump
     )]
     pub oracle_account: Account<'info, OracleAccount>,
@@ -96,7 +96,7 @@ pub struct RegisterOracle<'info> {
 #[derive(Accounts)]
 pub struct OracleControl<'info> {
     pub oracle: Signer<'info>,
-    #[account(mut, seeds = [b"oracle", oracle.key().as_ref()], bump = oracle_account.bump)]
+    #[account(mut, seeds = [b"oracle", oracle.key().to_bytes().as_slice()], bump = oracle_account.bump)]
     pub oracle_account: Account<'info, OracleAccount>,
 }
 
@@ -118,7 +118,7 @@ pub struct RegisterProof<'info> {
         space = 8 + ProofAccount::INIT_SPACE,
         seeds = [
             b"proof",
-            oracle.key().as_ref(),
+            oracle.key().to_bytes().as_slice(),
             target_oracle_hash.to_lowercase().as_bytes(),
             circuit_id.to_le_bytes().as_slice(),
             user_pubkey_hash.to_lowercase().as_bytes()
@@ -139,7 +139,7 @@ pub struct IncreaseAccountSize<'info> {
         realloc = len as usize,
         realloc::zero = true,
         realloc::payer=oracle,
-        seeds = [b"oracle", oracle.key().as_ref()],
+        seeds = [b"oracle", oracle.key().to_bytes().as_slice()],
         bump = oracle_account.bump
     )]
     pub oracle_account: Account<'info, OracleAccount>,
