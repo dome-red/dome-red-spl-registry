@@ -131,7 +131,7 @@ pub struct RegisterProof<'info> {
 
 #[derive(Accounts)]
 #[instruction(len: u32)]
-pub struct IncreaseAccoutSize<'info> {
+pub struct IncreaseAccountSize<'info> {
     #[account(mut)]
     pub oracle: Signer<'info>,
     #[account(
