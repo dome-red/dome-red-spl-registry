@@ -41,8 +41,8 @@ mod dome_red_spl_registry {
     }
 
     // -----
-
-    pub fn register_circuit(ctx: Context<OracleControl>, circuit_name: String, circuit_program: String, circuit_signals: String) -> Result<()> {
+    
+    pub fn register_circuit(ctx: Context<OracleControl>, circuit_name: String, circuit_program: String, circuit_signals: Vec<String>) -> Result<()> {
         let oracle_account = &mut ctx.accounts.oracle_account;
         oracle_account.circuits_pool().add_circuit(&circuit_name, &circuit_program, &circuit_signals)
     }
