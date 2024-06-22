@@ -26,7 +26,6 @@ impl CircuitsPool {
 
     pub fn get_circuit_index(&self, circuit_id: u32) -> Option<usize> {
         self.circuits.iter()
-            .filter(|x| x.enabled)
             .position(|x| x.id == circuit_id)
     }
 
@@ -35,9 +34,9 @@ impl CircuitsPool {
             .and_then(|index| self.circuits.get_mut(index))
     }
 
-    pub fn add_circuit(&mut self, circuit_name: &str, circuit_program: &str) -> Result<()> {
+    pub fn add_circuit(&mut self, circuit_name: &str, circuit_program: &str, circuit_signals: &str) -> Result<()> {
         let circuit = self.next_circuit_id()
-            .and_then(|circuit_id| Circuit::new(circuit_id, circuit_name, circuit_program))?;
+            .and_then(|circuit_id| Circuit::new(circuit_id, circuit_name, circuit_program, circuit_signals))?;
         self.circuits.push(circuit);
         Ok(())
     }

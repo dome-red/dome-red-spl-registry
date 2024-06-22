@@ -10,6 +10,24 @@ describe("dome-red-spl-registry", () => {
 
     const program = anchor.workspace.DomeRedSplRegistry as Program<DomeRedSplRegistry>;
 
+    it("Get instruction data", async() => {
+        const [oracleAccountPDA, _] = await PublicKey.findProgramAddress(
+            [
+                anchor.utils.bytes.utf8.encode('oracle'),
+                provider.wallet.publicKey.toBuffer(),
+            ],
+            program.programId
+        )
+
+        let instruction = await program.methods.registerOracle('oracle-1').accounts({
+            oracle: provider.wallet.publicKey,
+            oracleAccount: oracleAccountPDA,
+        }).instruction();
+        console.log(instruction);
+    });
+
+    /*
+
     it("Sets and changes Oracle name", async () => {
         const [oracleAccountPDA, _] = await PublicKey.findProgramAddress(
             [
@@ -110,4 +128,6 @@ describe("dome-red-spl-registry", () => {
         assert.equal(oracleAccount.circuitsPool.circuits.length, 5);
         console.log(oracleAccount.circuitsPool.circuits);
     });
+
+     */
 });

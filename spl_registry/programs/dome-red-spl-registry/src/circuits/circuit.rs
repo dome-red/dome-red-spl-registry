@@ -4,6 +4,7 @@ use crate::errors::DomeError;
 
 const MAX_NAME_LENGTH: usize = 32;
 const MAX_PROGRAM_LENGTH: usize = 2048;
+const MAX_SIGNALS_LENGTH: usize = 2048;
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq, InitSpace)]
 pub struct Circuit {
@@ -13,10 +14,13 @@ pub struct Circuit {
     name: String,
     #[max_len(MAX_PROGRAM_LENGTH)]
     program: String,
+    // Comma-separated input signals names.
+    #[max_len(MAX_SIGNALS_LENGTH)]
+    signals: String,
 }
 
 impl Circuit {
-    pub fn new(circuit_id: u32, circuit_name: &str, circuit_program: &str) -> Result<Self> {
+    pub fn new(circuit_id: u32, circuit_name: &str, circuit_program: &str, circuit_signals: &str) -> Result<Self> {
         if circuit_name.len() > MAX_NAME_LENGTH {
             return Err(DomeError::CircuitNameTooLong.into());
         }
@@ -28,6 +32,7 @@ impl Circuit {
             enabled: true,
             name: circuit_name.to_owned(),
             program: circuit_program.to_owned(),
+            signals: circuit_signals.to_owned()
         })
     }
 

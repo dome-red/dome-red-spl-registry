@@ -8,7 +8,7 @@ mod circuits;
 mod oracles;
 mod proofs;
 
-declare_id!("DWPQtKoCh7daDAqJa5LAw2QT9aZtgXk38QBSpTz6yoVX");
+declare_id!("3gSxUYN1u3HgKLWo5HLzig4gHKPsxPj6yvvGtGvxcfMZ");
 
 #[program]
 mod dome_red_spl_registry {
@@ -42,9 +42,9 @@ mod dome_red_spl_registry {
 
     // -----
 
-    pub fn register_circuit(ctx: Context<OracleControl>, circuit_name: String, circuit_program: String) -> Result<()> {
+    pub fn register_circuit(ctx: Context<OracleControl>, circuit_name: String, circuit_program: String, circuit_signals: String) -> Result<()> {
         let oracle_account = &mut ctx.accounts.oracle_account;
-        oracle_account.circuits_pool().add_circuit(&circuit_name, &circuit_program)
+        oracle_account.circuits_pool().add_circuit(&circuit_name, &circuit_program, &circuit_signals)
     }
 
     pub fn remove_circuit(ctx: Context<OracleControl>, circuit_id: u32) -> Result<()> {
@@ -64,7 +64,8 @@ mod dome_red_spl_registry {
 
     // -----
 
-    pub fn register_proof(ctx: Context<RegisterProof>, _target_oracle_hash: String, _circuit_id: u32, _user_pubkey_hash: String, proof: String, public: String, verification_key: String) -> Result<()> {
+    #[allow(unused_variables)]
+    pub fn register_proof(ctx: Context<RegisterProof>, target_oracle_hash: String, circuit_id: u32, user_pubkey_hash: String, proof: String, public: String, verification_key: String) -> Result<()> {
         let proof_account = &mut ctx.accounts.proof_account;
         proof_account.initialize(&proof, &public, &verification_key)?;
         proof_account.set_bump(ctx.bumps.proof_account);

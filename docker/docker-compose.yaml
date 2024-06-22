@@ -1,6 +1,6 @@
 services:
   solana:
-    image: dome-red/spl-registry:latest
+    image: at5500/dome-red-spl-registry:latest
     hostname: solana
     networks:
       - net
@@ -15,7 +15,7 @@ services:
     entrypoint: /opt/docker/solana-run-registry.sh
 
   spl-registry:
-    image: dome-red/spl-registry:latest
+    image: at5500/dome-red-spl-registry:latest
     hostname: spl-registry
     depends_on:
       solana:

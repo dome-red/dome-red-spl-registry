@@ -1,0 +1,8 @@
+.DS_Store
+.anchor
+Dockerfile
+node_modules
+.dockerignore
+target
+*.lock
+*.sock
