@@ -88,27 +88,48 @@ describe("dome-red-spl-registry", () => {
             .rpc();
         console.log("register_oracle tx", register_tx);
 
-        let register_circuit = async function(program, name, code, signal_names, oracle, oracleAccount) {
-            let register_circuit_tx = await program.methods.registerCircuit(name, code, signal_names)
+        let register_circuit = async function(program, circuit, oracle, oracleAccount) {
+            let register_circuit_tx = await program.methods.registerCircuit(circuit)
                 .accounts({
                     oracle: oracle,
                     oracleAccount: oracleAccount,
                 })
                 .rpc();
-            console.log("register_circuit tx", name, register_circuit_tx);
+            console.log("register_circuit tx", circuit.name, register_circuit_tx);
         }
 
-        await register_circuit(program, 'Circuit #1', 'Circuit 1 - code', ['pubk', 'shdk'], provider.wallet.publicKey, oracleAccountPDA);
-        await register_circuit(program, 'Circuit #2', 'Circuit 2 - code', ['pubk', 'shdk'], provider.wallet.publicKey, oracleAccountPDA);
-        await register_circuit(program, 'Circuit #3', 'Circuit 3 - code', ['pubk', 'shdk'], provider.wallet.publicKey, oracleAccountPDA);
-        await register_circuit(program, 'Circuit #4', 'Circuit 4 - code', ['pubk', 'shdk'], provider.wallet.publicKey, oracleAccountPDA);
+        let circuit_1 = {
+            name: 'Circuit #1',
+            program: 'Circuit 1 - Code',
+            signalNames: ['pubk', 'shdk']
+        };
+        let circuit_2 = {
+            name: 'Circuit #2',
+            program: 'Circuit 2 - Code',
+            signalNames: ['pubk', 'shdk']
+        };
+        let circuit_3 = {
+            name: 'Circuit #3',
+            program: 'Circuit 3 - Code',
+            signalNames: ['pubk', 'shdk']
+        };
+        let circuit_4 = {
+            name: 'Circuit #4',
+            program: 'Circuit 4 - Code',
+            signalNames: ['pubk', 'shdk']
+        };
+
+        await register_circuit(program, circuit_1, provider.wallet.publicKey, oracleAccountPDA);
+        await register_circuit(program, circuit_2, provider.wallet.publicKey, oracleAccountPDA);
+        await register_circuit(program, circuit_3, provider.wallet.publicKey, oracleAccountPDA);
+        await register_circuit(program, circuit_4, provider.wallet.publicKey, oracleAccountPDA);
 
         // Fetch the account details of the created tweet.
         let oracleAccount = await program.account.oracleAccount.fetch(oracleAccountPDA);
 
         // Ensure it has the right number of circuits.
-        assert.equal(oracleAccount.circuitsPool.circuits.length, 4);
-        console.log(oracleAccount.circuitsPool.circuits);
+        assert.equal(oracleAccount.circuitsPool.circuitItems.length, 4);
+        console.log(oracleAccount.circuitsPool.circuitItems);
 
         // Increase oracle account size.
         const increase_account_size_tx = await program.methods.increaseAccountSize(4096)
@@ -120,13 +141,18 @@ describe("dome-red-spl-registry", () => {
         console.log("increase_account_size tx", increase_account_size_tx);
 
         // And try to register extra circuit.
-        await register_circuit(program, 'Circuit #5', 'Circuit 5 - code', ['pubk', 'shdk'], provider.wallet.publicKey, oracleAccountPDA);
+        let circuit_5 = {
+            name: 'Circuit #5',
+            program: 'Circuit 5 - Code',
+            signalNames: ['pubk', 'shdk']
+        };
+        await register_circuit(program, circuit_5, provider.wallet.publicKey, oracleAccountPDA);
 
         // Fetch the account details of the created tweet.
         oracleAccount = await program.account.oracleAccount.fetch(oracleAccountPDA);
 
         // Ensure it has the right number of circuits.
-        assert.equal(oracleAccount.circuitsPool.circuits.length, 5);
-        console.log(oracleAccount.circuitsPool.circuits);
+        assert.equal(oracleAccount.circuitsPool.circuitItems.length, 5);
+        console.log(oracleAccount.circuitsPool.circuitItems);
     });
 });

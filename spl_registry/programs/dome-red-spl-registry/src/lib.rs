@@ -1,7 +1,8 @@
 use anchor_lang::prelude::*;
 
 use oracles::OracleAccount;
-use proofs::ProofAccount;
+use proofs::{Proof, ProofAccount};
+use circuits::Circuit;
 
 mod errors;
 mod circuits;
@@ -44,28 +45,25 @@ mod dome_red_spl_registry {
     
     pub fn register_circuit(
         ctx: Context<OracleControl>,
-        name: String,
-        program: String,
-        signal_names: Vec<String>
+        circuit: Circuit,
     ) -> Result<()> {
-        let circuit = Circuit::new(&name, &program, &signal_names);
         ctx.accounts.oracle_account
-            .circuits_pool().add_circuit(&circuit)
+            .circuits_pool().add_circuit_item(&circuit)
     }
 
-    pub fn remove_circuit(ctx: Context<OracleControl>, circuit_id: u32) -> Result<()> {
+    pub fn remove_circuit(ctx: Context<OracleControl>, circuit_item_id: u32) -> Result<()> {
         ctx.accounts.oracle_account
-            .circuits_pool().remove_circuit(circuit_id)
+            .circuits_pool().remove_circuit_item(circuit_item_id)
     }
 
-    pub fn enable_circuit(ctx: Context<OracleControl>, circuit_id: u32) -> Result<()> {
+    pub fn enable_circuit(ctx: Context<OracleControl>, circuit_item_id: u32) -> Result<()> {
         ctx.accounts.oracle_account
-            .circuits_pool().set_enabled(circuit_id, true)
+            .circuits_pool().set_circuit_item_enabled(circuit_item_id, true)
     }
 
-    pub fn disable_circuit(ctx: Context<OracleControl>, circuit_id: u32) -> Result<()> {
+    pub fn disable_circuit(ctx: Context<OracleControl>, circuit_item_id: u32) -> Result<()> {
         ctx.accounts.oracle_account
-            .circuits_pool().set_enabled(circuit_id, false)
+            .circuits_pool().set_circuit_item_enabled(circuit_item_id, false)
     }
 
     // -----
@@ -74,14 +72,12 @@ mod dome_red_spl_registry {
     pub fn register_proof(
         ctx: Context<RegisterProof>,
         target_oracle_hash: String,
-        circuit_id: u32,
+        circuit_item_id: u32,
         user_pubkey_hash: String,
-        proof: String,
-        public_signals: Vec<String>,
-        verification_key: String
+        proof: Proof
     ) -> Result<()> {
         ctx.accounts.proof_account
-            .setup(&proof, &public_signals, &verification_key)
+            .setup(&proof)
             .set_bump(ctx.bumps.proof_account);
         Ok(())
     }

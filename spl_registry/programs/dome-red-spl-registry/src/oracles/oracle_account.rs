@@ -5,7 +5,7 @@ use crate::circuits::CircuitsPool;
 const REF_NAME_LEN: usize = 32;
 
 #[account]
-#[derive(InitSpace, Default)]
+#[derive(InitSpace)]
 pub struct OracleAccount {
     enabled: bool,
     #[max_len(REF_NAME_LEN)]
