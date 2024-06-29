@@ -4,10 +4,10 @@ use oracles::OracleAccount;
 use proofs::{Proof, ProofAccount};
 use circuits::Circuit;
 
-mod errors;
-mod circuits;
-mod oracles;
-mod proofs;
+pub mod errors;
+pub mod circuits;
+pub mod oracles;
+pub mod proofs;
 
 declare_id!("3gSxUYN1u3HgKLWo5HLzig4gHKPsxPj6yvvGtGvxcfMZ");
 
