@@ -1,11 +1,12 @@
 use anchor_lang::prelude::*;
+use serde::{Serialize, Deserialize};
 use crate::circuits::CircuitsPool;
 
 // Maximum PDA size in one iteration is 10240 bytes.ы
 const REF_NAME_LEN: usize = 32;
 
 #[account]
-#[derive(InitSpace)]
+#[derive(InitSpace, Serialize, Deserialize)]
 pub struct OracleAccount {
     pub enabled: bool,
     #[max_len(REF_NAME_LEN)]

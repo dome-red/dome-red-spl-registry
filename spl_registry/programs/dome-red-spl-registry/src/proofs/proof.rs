@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use serde::{Serialize, Deserialize};
 
 // Maximum PDA size in one iteration is 10240 bytes.
 const REF_PROOF_LEN: usize = 4096;
@@ -6,7 +7,7 @@ const REF_PUBLIC_SIGNALS_NUM: usize = 16;
 const REF_PUBLIC_SIGNAL_LEN: usize = 16;
 const REF_VERIFICATION_KEY_LEN: usize = 2048;
 
-#[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone)]
+#[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone, Serialize, Deserialize)]
 pub struct Proof {
     #[max_len(REF_PROOF_LEN)]
     pub proof: String,

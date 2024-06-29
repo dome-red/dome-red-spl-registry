@@ -1,8 +1,9 @@
 use anchor_lang::prelude::*;
 use super::Proof;
+use serde::{Serialize, Deserialize};
 
 #[account]
-#[derive(InitSpace)]
+#[derive(InitSpace, Serialize, Deserialize)]
 pub struct ProofAccount {
     pub proof: Proof,
     pub bump: u8,

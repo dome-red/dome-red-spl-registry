@@ -1,11 +1,12 @@
 use anchor_lang::prelude::*;
+use serde::{Serialize, Deserialize};
 
 const REF_NAME_LEN: usize = 32;
 const REF_PROGRAM_LEN: usize = 1024;
 const REF_SIGNAL_NAMES_NUM: usize = 16;
 const REF_SIGNAL_NAME_LEN: usize = 16;
 
-#[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone)]
+#[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone, Serialize, Deserialize)]
 pub struct Circuit {
     #[max_len(REF_NAME_LEN)]
     pub name: String,

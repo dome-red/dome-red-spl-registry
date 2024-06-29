@@ -1,8 +1,8 @@
 use anchor_lang::prelude::*;
-
+use serde::{Serialize, Deserialize};
 use super::Circuit;
 
-#[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone)]
+#[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone, Serialize, Deserialize)]
 pub struct CircuitItem {
     pub id: u32,
     pub enabled: bool,

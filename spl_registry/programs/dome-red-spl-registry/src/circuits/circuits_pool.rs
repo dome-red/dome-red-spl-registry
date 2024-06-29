@@ -1,10 +1,11 @@
 use anchor_lang::prelude::*;
+use serde::{Serialize, Deserialize};
 use crate::errors::DomeError;
 use super::{Circuit, CircuitItem};
 
 const REF_CIRCUITS_NUM: usize = 4; //32;
 
-#[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone)]
+#[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone, Serialize, Deserialize)]
 pub struct CircuitsPool {
     #[max_len(REF_CIRCUITS_NUM, Circuit::INIT_SPACE)]
     pub circuit_items: Vec<CircuitItem>,

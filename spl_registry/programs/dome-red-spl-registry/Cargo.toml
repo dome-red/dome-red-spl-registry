@@ -18,3 +18,4 @@ default = []
 
 [dependencies]
 anchor-lang = { version = "0.30.1", features = ["init-if-needed"] }
+serde = "=1.0.203"
