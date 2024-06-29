@@ -13,62 +13,76 @@ declare_id!("3gSxUYN1u3HgKLWo5HLzig4gHKPsxPj6yvvGtGvxcfMZ");
 #[program]
 mod dome_red_spl_registry {
     use super::*;
+    use crate::circuits::Circuit;
 
     pub fn register_oracle(ctx: Context<RegisterOracle>, oracle_name: String) -> Result<()> {
-        let oracle_account = &mut ctx.accounts.oracle_account;
-        oracle_account.initialize(&oracle_name)?;
-        oracle_account.set_bump(ctx.bumps.oracle_account);
+        ctx.accounts.oracle_account
+            .setup(&oracle_name)
+            .set_bump(ctx.bumps.oracle_account);
+        Ok(())
+    }
+
+    pub fn change_oracle(ctx: Context<OracleControl>, oracle_name: String) -> Result<()> {
+        ctx.accounts.oracle_account
+            .set_name(&oracle_name);
         Ok(())
     }
 
     pub fn enable_oracle(ctx: Context<OracleControl>) -> Result<()> {
-        let oracle_account = &mut ctx.accounts.oracle_account;
-        oracle_account.set_enabled(true).map(|_| ())
+        ctx.accounts.oracle_account
+            .set_enabled(true);
+        Ok(())
     }
 
     pub fn disable_oracle(ctx: Context<OracleControl>) -> Result<()> {
-        let oracle_account = &mut ctx.accounts.oracle_account;
-        oracle_account.set_enabled(false).map(|_| ())
-    }
-
-    pub fn change_oracle(
-        ctx: Context<OracleControl>,
-        oracle_name: String,
-    ) -> Result<()> {
-        let oracle_account = &mut ctx.accounts.oracle_account;
-        oracle_account.set_name(&oracle_name)?;
+        ctx.accounts.oracle_account
+            .set_enabled(false);
         Ok(())
     }
 
     // -----
     
-    pub fn register_circuit(ctx: Context<OracleControl>, circuit_name: String, circuit_program: String, circuit_signals: Vec<String>) -> Result<()> {
-        let oracle_account = &mut ctx.accounts.oracle_account;
-        oracle_account.circuits_pool().add_circuit(&circuit_name, &circuit_program, &circuit_signals)
+    pub fn register_circuit(
+        ctx: Context<OracleControl>,
+        name: String,
+        program: String,
+        signal_names: Vec<String>
+    ) -> Result<()> {
+        let circuit = Circuit::new(&name, &program, &signal_names);
+        ctx.accounts.oracle_account
+            .circuits_pool().add_circuit(&circuit)
     }
 
     pub fn remove_circuit(ctx: Context<OracleControl>, circuit_id: u32) -> Result<()> {
-        let oracle_account = &mut ctx.accounts.oracle_account;
-        oracle_account.circuits_pool().remove_circuit(circuit_id)
+        ctx.accounts.oracle_account
+            .circuits_pool().remove_circuit(circuit_id)
     }
 
     pub fn enable_circuit(ctx: Context<OracleControl>, circuit_id: u32) -> Result<()> {
-        let oracle_account = &mut ctx.accounts.oracle_account;
-        oracle_account.circuits_pool().set_enabled(circuit_id, true)
+        ctx.accounts.oracle_account
+            .circuits_pool().set_enabled(circuit_id, true)
     }
 
     pub fn disable_circuit(ctx: Context<OracleControl>, circuit_id: u32) -> Result<()> {
-        let oracle_account = &mut ctx.accounts.oracle_account;
-        oracle_account.circuits_pool().set_enabled(circuit_id, false)
+        ctx.accounts.oracle_account
+            .circuits_pool().set_enabled(circuit_id, false)
     }
 
     // -----
 
     #[allow(unused_variables)]
-    pub fn register_proof(ctx: Context<RegisterProof>, target_oracle_hash: String, circuit_id: u32, user_pubkey_hash: String, proof: String, public: String, verification_key: String) -> Result<()> {
-        let proof_account = &mut ctx.accounts.proof_account;
-        proof_account.initialize(&proof, &public, &verification_key)?;
-        proof_account.set_bump(ctx.bumps.proof_account);
+    pub fn register_proof(
+        ctx: Context<RegisterProof>,
+        target_oracle_hash: String,
+        circuit_id: u32,
+        user_pubkey_hash: String,
+        proof: String,
+        public_signals: Vec<String>,
+        verification_key: String
+    ) -> Result<()> {
+        ctx.accounts.proof_account
+            .setup(&proof, &public_signals, &verification_key)
+            .set_bump(ctx.bumps.proof_account);
         Ok(())
     }
 
@@ -107,7 +121,7 @@ pub struct OracleControl<'info> {
     circuit_id: u32,
     user_pubkey_hash: String,
     proof: String,
-    public: String,
+    public_signals: String,
     verification_key: String
 )]
 pub struct RegisterProof<'info> {

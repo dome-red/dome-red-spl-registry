@@ -1,5 +1,5 @@
 [workspace]
 
 members = [
-    "spl_registry/programs/dome-red-spl-registry"
+    "spl_registry/programs/*"
 ]

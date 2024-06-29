@@ -10,6 +10,7 @@ describe("dome-red-spl-registry", () => {
 
     const program = anchor.workspace.DomeRedSplRegistry as Program<DomeRedSplRegistry>;
 
+    /*
     it("Get instruction data", async() => {
         const [oracleAccountPDA, _] = await PublicKey.findProgramAddress(
             [
@@ -25,8 +26,7 @@ describe("dome-red-spl-registry", () => {
         }).instruction();
         console.log(instruction);
     });
-
-    /*
+     */
 
     it("Sets and changes Oracle name", async () => {
         const [oracleAccountPDA, _] = await PublicKey.findProgramAddress(
@@ -70,6 +70,7 @@ describe("dome-red-spl-registry", () => {
 
     });
 
+
     it("Add circuits to oracle", async () => {
         const [oracleAccountPDA, _] = await PublicKey.findProgramAddress(
             [
@@ -87,8 +88,8 @@ describe("dome-red-spl-registry", () => {
             .rpc();
         console.log("register_oracle tx", register_tx);
 
-        let register_circuit = async function(program, name, code, oracle, oracleAccount) {
-            let register_circuit_tx = await program.methods.registerCircuit(name, code)
+        let register_circuit = async function(program, name, code, signal_names, oracle, oracleAccount) {
+            let register_circuit_tx = await program.methods.registerCircuit(name, code, signal_names)
                 .accounts({
                     oracle: oracle,
                     oracleAccount: oracleAccount,
@@ -97,10 +98,10 @@ describe("dome-red-spl-registry", () => {
             console.log("register_circuit tx", name, register_circuit_tx);
         }
 
-        await register_circuit(program, 'Circuit #1', 'Circuit 1 - code', provider.wallet.publicKey, oracleAccountPDA);
-        await register_circuit(program, 'Circuit #2', 'Circuit 2 - code', provider.wallet.publicKey, oracleAccountPDA);
-        await register_circuit(program, 'Circuit #3', 'Circuit 3 - code', provider.wallet.publicKey, oracleAccountPDA);
-        await register_circuit(program, 'Circuit #4', 'Circuit 4 - code', provider.wallet.publicKey, oracleAccountPDA);
+        await register_circuit(program, 'Circuit #1', 'Circuit 1 - code', ['pubk', 'shdk'], provider.wallet.publicKey, oracleAccountPDA);
+        await register_circuit(program, 'Circuit #2', 'Circuit 2 - code', ['pubk', 'shdk'], provider.wallet.publicKey, oracleAccountPDA);
+        await register_circuit(program, 'Circuit #3', 'Circuit 3 - code', ['pubk', 'shdk'], provider.wallet.publicKey, oracleAccountPDA);
+        await register_circuit(program, 'Circuit #4', 'Circuit 4 - code', ['pubk', 'shdk'], provider.wallet.publicKey, oracleAccountPDA);
 
         // Fetch the account details of the created tweet.
         let oracleAccount = await program.account.oracleAccount.fetch(oracleAccountPDA);
@@ -119,7 +120,7 @@ describe("dome-red-spl-registry", () => {
         console.log("increase_account_size tx", increase_account_size_tx);
 
         // And try to register extra circuit.
-        await register_circuit(program, 'Circuit #5', 'Circuit 5 - code', provider.wallet.publicKey, oracleAccountPDA);
+        await register_circuit(program, 'Circuit #5', 'Circuit 5 - code', ['pubk', 'shdk'], provider.wallet.publicKey, oracleAccountPDA);
 
         // Fetch the account details of the created tweet.
         oracleAccount = await program.account.oracleAccount.fetch(oracleAccountPDA);
@@ -128,6 +129,4 @@ describe("dome-red-spl-registry", () => {
         assert.equal(oracleAccount.circuitsPool.circuits.length, 5);
         console.log(oracleAccount.circuitsPool.circuits);
     });
-
-     */
 });

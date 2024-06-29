@@ -1,42 +1,34 @@
 use anchor_lang::prelude::*;
 
-use crate::errors::DomeError;
-
 // Maximum PDA size in one iteration is 10240 bytes.
-const MAX_PROOF_LENGTH: usize = 4096;
-const MAX_PUBLIC_LENGTH: usize = 2048;
-const MAX_VERIFICATION_KEY_LENGTH: usize = 2048;
+const REF_PROOF_LEN: usize = 4096;
+const REF_PUBLIC_SIGNALS_NUM: usize = 16;
+const REF_PUBLIC_SIGNAL_LEN: usize = 16;
+const REF_VERIFICATION_KEY_LEN: usize = 2048;
 
 #[account]
-#[derive(InitSpace)]
+#[derive(InitSpace, Default)]
 pub struct ProofAccount {
-    #[max_len(MAX_PROOF_LENGTH)]
+    #[max_len(REF_PROOF_LEN)]
     proof: String,
-    #[max_len(MAX_PUBLIC_LENGTH)]
-    public: String,
-    #[max_len(MAX_VERIFICATION_KEY_LENGTH)]
+    #[max_len(REF_PUBLIC_SIGNALS_NUM, REF_PUBLIC_SIGNAL_LEN)]
+    public_signals: Vec<String>,
+    #[max_len(REF_VERIFICATION_KEY_LEN)]
     verification_key: String,
-    pub bump: u8,
+    pub(crate) bump: u8,
 }
 
 impl ProofAccount {
-    pub fn initialize(&mut self, proof: &str, public: &str, verification_key: &str) -> Result<()> {
-        if proof.len() > MAX_PROOF_LENGTH {
-            return Err(DomeError::ProofTooLong.into());
-        }
-        if public.len() > MAX_PUBLIC_LENGTH {
-            return Err(DomeError::ProofPublicTooLong.into());
-        }
-        if verification_key.len() > MAX_VERIFICATION_KEY_LENGTH {
-            return Err(DomeError::ProofVerificationKeytooLong.into());
-        }
-        self.proof = proof.to_owned();
-        self.public = public.to_owned();
-        self.verification_key = verification_key.to_owned();
-        Ok(())
+    pub fn setup(&mut self, proof: &str, public_signals: &Vec<String>, verification_key: &str) -> &mut Self {
+        self.proof = proof.to_string();
+        self.public_signals = public_signals.clone();
+        self.verification_key = verification_key.to_string();
+        self
     }
 
-    pub fn set_bump(&mut self, bump: u8) {
+    pub fn set_bump(&mut self, bump: u8) -> (&mut Self, u8) {
+        let prev_value = self.bump;
         self.bump = bump;
+        (self, prev_value)
     }
 }

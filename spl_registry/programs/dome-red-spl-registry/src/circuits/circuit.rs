@@ -1,43 +1,45 @@
 use anchor_lang::prelude::*;
 
-use crate::errors::DomeError;
-
-const MAX_NAME_LENGTH: usize = 32;
-const MAX_PROGRAM_LENGTH: usize = 2048;
-const MAX_SIGNALS_NUM: usize = 32; //32;
+const REF_NAME_LEN: usize = 32;
+const REF_PROGRAM_LEN: usize = 1024;
+const REF_SIGNAL_NAMES_NUM: usize = 16;
+const REF_SIGNAL_NAME_LEN: usize = 16;
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone, PartialEq, Eq, InitSpace)]
 pub struct Circuit {
-    pub(crate) id: u32,
-    pub(crate) enabled: bool,
-    #[max_len(MAX_NAME_LENGTH)]
+    id: u32,
+    enabled: bool,
+    #[max_len(REF_NAME_LEN)]
     name: String,
-    #[max_len(MAX_PROGRAM_LENGTH)]
+    #[max_len(REF_PROGRAM_LEN)]
     program: String,
-    #[max_len(MAX_SIGNALS_NUM, 32)]
-    signals: Vec<String>,
+    #[max_len(REF_SIGNAL_NAMES_NUM, REF_SIGNAL_NAME_LEN)]
+    signal_names: Vec<String>,
 }
 
 impl Circuit {
-    pub fn new(circuit_id: u32, circuit_name: &str, circuit_program: &str, circuit_signals: &Vec<String>) -> Result<Self> {
-        if circuit_name.len() > MAX_NAME_LENGTH {
-            return Err(DomeError::CircuitNameTooLong.into());
-        }
-        if circuit_program.len() > MAX_PROGRAM_LENGTH {
-            return Err(DomeError::CircuitProgramTooLong.into());
-        }
-        Ok(Self {
-            id: circuit_id,
+    pub fn new(name: &str, program: &str, signal_names: &Vec<String>) -> Self {
+        Self {
+            id: 0,
             enabled: true,
-            name: circuit_name.to_owned(),
-            program: circuit_program.to_owned(),
-            signals: circuit_signals.clone()
-        })
+            name: name.to_string(),
+            program: program.to_string(),
+            signal_names: signal_names.clone()
+        }
     }
 
-    pub fn set_enabled(&mut self, enabled: bool) -> Result<bool> {
+    pub fn get_id(&self) -> u32 {
+        self.id
+    }
+
+    pub fn set_id(&mut self, id: u32) -> (&mut Self, u32) {
+        self.id = id;
+        (self, id)
+    }
+
+    pub fn set_enabled(&mut self, enabled: bool) -> (&mut Self, bool) {
         let prev_value = self.enabled;
         self.enabled = enabled;
-        Ok(prev_value)
+        (self, prev_value)
     }
 }
