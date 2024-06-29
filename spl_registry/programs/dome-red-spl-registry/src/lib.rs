@@ -58,17 +58,17 @@ mod dome_red_spl_registry {
             .circuits_pool().add_circuit_item(&circuit)
     }
 
-    pub fn remove_circuit(ctx: Context<OracleControl>, circuit_item_id: u32) -> Result<()> {
+    pub fn remove_circuit_item(ctx: Context<OracleControl>, circuit_item_id: u32) -> Result<()> {
         ctx.accounts.oracle_account
             .circuits_pool().remove_circuit_item(circuit_item_id)
     }
 
-    pub fn enable_circuit(ctx: Context<OracleControl>, circuit_item_id: u32) -> Result<()> {
+    pub fn enable_circuit_item(ctx: Context<OracleControl>, circuit_item_id: u32) -> Result<()> {
         ctx.accounts.oracle_account
             .circuits_pool().set_circuit_item_enabled(circuit_item_id, true)
     }
 
-    pub fn disable_circuit(ctx: Context<OracleControl>, circuit_item_id: u32) -> Result<()> {
+    pub fn disable_circuit_item(ctx: Context<OracleControl>, circuit_item_id: u32) -> Result<()> {
         ctx.accounts.oracle_account
             .circuits_pool().set_circuit_item_enabled(circuit_item_id, false)
     }
