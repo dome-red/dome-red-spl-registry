@@ -4,8 +4,8 @@ use super::Proof;
 #[account]
 #[derive(InitSpace)]
 pub struct ProofAccount {
-    proof: Proof,
-    pub(crate) bump: u8,
+    pub proof: Proof,
+    pub bump: u8,
 }
 
 impl ProofAccount {

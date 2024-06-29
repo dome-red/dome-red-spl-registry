@@ -4,9 +4,9 @@ use super::Circuit;
 
 #[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone)]
 pub struct CircuitItem {
-    id: u32,
-    enabled: bool,
-    circuit: Circuit,
+    pub id: u32,
+    pub enabled: bool,
+    pub circuit: Circuit,
 }
 
 impl CircuitItem {

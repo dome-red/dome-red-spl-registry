@@ -8,11 +8,11 @@ const REF_SIGNAL_NAME_LEN: usize = 16;
 #[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone)]
 pub struct Circuit {
     #[max_len(REF_NAME_LEN)]
-    name: String,
+    pub name: String,
     #[max_len(REF_PROGRAM_LEN)]
-    program: String,
+    pub program: String,
     #[max_len(REF_SIGNAL_NAMES_NUM, REF_SIGNAL_NAME_LEN)]
-    signal_names: Vec<String>,
+    pub signal_names: Vec<String>,
 }
 
 impl Circuit {

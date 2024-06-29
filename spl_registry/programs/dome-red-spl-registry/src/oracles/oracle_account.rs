@@ -7,11 +7,11 @@ const REF_NAME_LEN: usize = 32;
 #[account]
 #[derive(InitSpace)]
 pub struct OracleAccount {
-    enabled: bool,
+    pub enabled: bool,
     #[max_len(REF_NAME_LEN)]
-    name: String,
-    circuits_pool: CircuitsPool,
-    pub(crate) bump: u8,
+    pub name: String,
+    pub circuits_pool: CircuitsPool,
+    pub bump: u8,
 }
 
 impl OracleAccount {

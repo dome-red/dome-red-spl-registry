@@ -7,8 +7,8 @@ const REF_CIRCUITS_NUM: usize = 4; //32;
 #[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone)]
 pub struct CircuitsPool {
     #[max_len(REF_CIRCUITS_NUM, Circuit::INIT_SPACE)]
-    circuit_items: Vec<CircuitItem>,
-    last_used_id: u32,
+    pub circuit_items: Vec<CircuitItem>,
+    pub last_used_id: u32,
 }
 
 impl CircuitsPool {

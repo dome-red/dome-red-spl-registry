@@ -9,11 +9,11 @@ const REF_VERIFICATION_KEY_LEN: usize = 2048;
 #[derive(AnchorSerialize, AnchorDeserialize, InitSpace, Clone)]
 pub struct Proof {
     #[max_len(REF_PROOF_LEN)]
-    proof: String,
+    pub proof: String,
     #[max_len(REF_PUBLIC_SIGNALS_NUM, REF_PUBLIC_SIGNAL_LEN)]
-    public_signals: Vec<String>,
+    pub public_signals: Vec<String>,
     #[max_len(REF_VERIFICATION_KEY_LEN)]
-    verification_key: String,
+    pub verification_key: String,
 }
 
 impl Proof {
