@@ -4,12 +4,19 @@ use oracles::OracleAccount;
 use proofs::{Proof, ProofAccount};
 use circuits::Circuit;
 
-pub mod errors;
-pub mod circuits;
-pub mod oracles;
-pub mod proofs;
+mod errors;
+mod circuits;
+mod oracles;
+mod proofs;
 
 declare_id!("3gSxUYN1u3HgKLWo5HLzig4gHKPsxPj6yvvGtGvxcfMZ");
+
+pub mod prelude {
+    pub use super::errors::*;
+    pub use super::circuits::*;
+    pub use super::oracles::*;
+    pub use super::proofs::*;
+}
 
 #[program]
 mod dome_red_spl_registry {
